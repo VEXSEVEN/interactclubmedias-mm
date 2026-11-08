@@ -14,7 +14,7 @@
     },
     "settings": {
       ".read": true,
-      ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer'"
+      ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'organizer' || root.child('users').child(auth.uid).child('role').val() === 'developer')"
     },
     "slots": {
       ".read": true,
@@ -40,14 +40,14 @@
     "credentials": {
       "$code": {
         ".read": true,
-        ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer'",
+        ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'organizer' || root.child('users').child(auth.uid).child('role').val() === 'developer')",
         ".validate": "newData.hasChildren(['username','password'])"
       }
     },
     "registrations": {
-      ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer'",
+      ".read": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'organizer' || root.child('users').child(auth.uid).child('role').val() === 'developer')",
       "$code": {
-        ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer' || (!data.exists() && newData.child('status').val() === 'pending' && root.child('settings').child('open').val() !== false)",
+        ".write": "auth != null && (root.child('users').child(auth.uid).child('role').val() === 'organizer' || root.child('users').child(auth.uid).child('role').val() === 'developer') || (!data.exists() && newData.child('status').val() === 'pending' && root.child('settings').child('open').val() !== false)",
         ".validate": "newData.hasChildren(['teamName','members','status','createdAt','slug','slotId'])",
         "teamName": {
           ".validate": "newData.isString() && newData.val().length >= 2 && newData.val().length <= 40"

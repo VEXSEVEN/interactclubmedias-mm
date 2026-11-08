@@ -12,7 +12,9 @@ export function applyTheme(t: Theme) {
   const r = document.documentElement;
   const dark = t.mode === "dark";
   const set = (k: string, v: string | number) => r.style.setProperty(k, String(v));
-  const ink = t.text || (dark ? mix(t.accent, 38, "#ffffff") : mix(t.accent, 72, "#050b1a"));
+  // In dark mode: textul implicit e alb-albăstrui (#f0f4ff), NU derivat din accent
+  // astfel butonele Glisse au text alb pe fundal sticla inchisa
+  const ink = t.text || (dark ? mix(t.accent, 20, "#f0f4ff") : mix(t.accent, 72, "#050b1a"));
   const sub = mix(ink, 100 - (t.subMix ?? 10), t.bg);
   r.dataset.theme = t.mode;
   r.style.colorScheme = t.mode;

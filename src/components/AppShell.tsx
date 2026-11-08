@@ -99,7 +99,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         {dashboard ? (
           <>
             {second && (
-              <div className="dock dock-second" key="second">
+              <div className="dock dock-second" key={second.items.map((i) => i.value).join(",")}>
                 <TabBar aria-label="Secțiuni panou" items={second.items} value={second.value} onValueChange={second.onChange} />
               </div>
             )}
@@ -134,9 +134,17 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
  * greu pentru GPU-ul telefoanelor si cu o imagine mare face fundalul sa dispara la scroll. De aceea se foloseste
  * doar pe desktop (pointer fin) si fara imagine proprie; pe telefon Glisse indoaie fundalul viu (Chromium) sau pastreaza frost-ul.
  */
+/**
+ * `data-glisse-backdrop` activat NUMAI fara imagine de fundal proprie si pe desktop (pointer fin).
+ * Cu o imagine (text "Transilvania"), refractia produce glitch RGB extrem.
+ */
 function Bg({ url }: { url: string }) {
+  const [fine, setFine] = useState(false);
+  useEffect(() => { setFine(window.matchMedia("(pointer: fine)").matches); }, []);
+  // backdrop activ: desktop fara imagine proprie
+  const backdrop = fine && !url;
   return (
-    <div className="bg" data-glisse-backdrop="" aria-hidden>
+    <div className="bg" {...(backdrop ? { "data-glisse-backdrop": "" } : {})} aria-hidden>
       {url && <div className="bg-img" style={{ backgroundImage: `url(${url})` }} />}
       {!url && (
         <>

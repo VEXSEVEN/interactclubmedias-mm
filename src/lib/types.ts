@@ -1,4 +1,4 @@
-export type Role = "developer" | "organizer" | "station" | "team";
+﻿export type Role = "developer" | "organizer" | "station" | "team";
 
 export interface Profile {
   role: Role;
@@ -76,6 +76,7 @@ export interface Theme {
   rim: number; // luciul marginii 0..1
   // suprascrieri pe componente (optional): daca lipsesc se calculeaza din accent
   text?: string; // culoarea textului
+  filled?: string; // butoane principale
   glassTint?: string; // culoarea sticlei
   glassAlpha?: number; // opacitatea sticlei 0..0.6
   line?: string; // borduri
@@ -83,7 +84,6 @@ export interface Theme {
   busy?: string; // "Ocupat" / eroare
   warn?: string; // "In asteptare"
   tabSelected?: string; // eticheta tab selectat din dock
-  filled?: string; // butoanele principale (implicit accent)
 }
 
 export interface Settings {

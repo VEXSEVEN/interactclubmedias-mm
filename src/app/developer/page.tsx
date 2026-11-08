@@ -8,6 +8,7 @@ import { Button, Glass, Input } from "glisse";
 import { db } from "@/lib/firebase";
 import { useAuth } from "@/lib/auth";
 import { useSettings, useStations, useVal } from "@/lib/db";
+import { applyTheme } from "@/lib/theme";
 import type { Profile, Role, Theme } from "@/lib/types";
 import Guard from "@/components/Guard";
 import DashShell from "@/components/DashShell";
@@ -64,7 +65,11 @@ function Media() {
       <ImageUpload label="Banner formular" value={banV} onChange={setBanner} folder="banner" />
       <div>
         <Button variant="filled" onClick={async () => {
-          await update(ref(db, "settings"), JSON.parse(JSON.stringify({ bgUrl: bgV, bannerUrl: banV, theme: theme ?? settings.theme })));
+          const themeToSave = theme ?? settings.theme;
+          await update(ref(db, "settings"), JSON.parse(JSON.stringify({ bgUrl: bgV, bannerUrl: banV, theme: themeToSave })));
+          // Aplica tema imediat si salveaz-o in localStorage ca sa persiste
+          applyTheme(themeToSave);
+          try { localStorage.setItem("imc_theme_v1", JSON.stringify(themeToSave)); } catch {}
           setBg(null); setBanner(null); setTheme(null);
           toast("Salvat.", "success");
         }}>Salvează imaginile și tema</Button>

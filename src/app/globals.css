@@ -217,6 +217,25 @@ h1, h2, h3, p, strong, span { overflow-wrap: anywhere; }
 .card.center > a > .lg-button { width: 100%; }
 .stack > div > .lg-button { align-self: flex-start; }
 
+/* ---- GLISSE: text buton intotdeauna vizibil ---- */
+/* In dark mode, --lg-foreground poate fi inchis vs fundalul glass; fortam culoarea explicita */
+.lg-button { color: var(--lg-foreground, var(--ink)); }
+/* Butoanele filled au intotdeauna text alb pe fundal colorat */
+.lg-button[data-variant="filled"],
+.lg-button[data-variant="tinted-filled"],
+.lg-button[data-destructive][data-variant="filled"] { color: #ffffff; }
+/* Butoanele destructive glass (rosu): text rosu vizibil */
+.lg-button[data-destructive]:not([data-variant="filled"]) { color: var(--busy, #d6342a); }
+
+/* ---- GLISSE: TabBar / SegmentedControl ---- */
+/* Asigura ca taburile sunt pe un rand, nu se sparga */
+.lg-tab-bar, .lg-segmented-control { flex-shrink: 0; }
+/* Text tab-uri vizibil mereu */
+.lg-tab-text { color: var(--lg-foreground, var(--ink)); }
+/* Tab selectat: culoarea accent, nu inherit */
+[data-selected] .lg-tab-text,
+.lg-segmented-item[aria-selected="true"] { color: var(--lg-tab-selected, var(--blue)); }
+
 /* camp propriu (select, data, fisier, textarea) la fel ca Glisse Input */
 .input { min-height: 46px; padding: 0 16px; border-radius: 23px; font-size: 16px; line-height: 1.3; color: var(--ink); }
 .input.area { padding: 13px 16px; border-radius: 22px; min-height: 96px; line-height: 1.45; resize: vertical; display: block; }
