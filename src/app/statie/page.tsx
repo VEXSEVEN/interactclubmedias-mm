@@ -143,16 +143,16 @@ function Station() {
       </Glass>
 
       {!locked && visited.filter((id) => !here.includes(id) && scores[id]?.[sid] === undefined).length > 0 && (
-        <div className="panel stack">
+        <Glass className="card stack">
           <h3>Au plecat fără punctaj</h3>
           {visited.filter((id) => !here.includes(id) && scores[id]?.[sid] === undefined).map((id) => (
             <div className="row between" key={id}><span className="grow">{nm(id)}</span><Button onClick={() => update(ref(db, `stations/${sid}/visited`), { [id]: null })}>Permite revenirea</Button></div>
           ))}
-        </div>
+        </Glass>
       )}
 
       {given.length > 0 && (
-        <div className="panel stack">
+        <Glass className="card stack">
           <h3>Punctaje date aici</h3>
           {given.map((t) => (
             <div className="row between" key={t.id}>
@@ -160,7 +160,7 @@ function Station() {
               {!locked && <Button destructive onClick={async () => { if (await ask(`Anulezi punctajul și vizita pentru ${t.name}?`, { confirmLabel: "Anulează punctajul", destructive: true })) await update(ref(db), { [`scores/${t.id}/${sid}`]: null, [`stations/${sid}/visited/${t.id}`]: null }); }}>Anulează</Button>}
             </div>
           ))}
-        </div>
+        </Glass>
       )}
     </>
   );

@@ -118,7 +118,15 @@ export default function FormularPage() {
 
   if (stage === "done")
     return (
-      <Glass className="card stack center">
+
+      <Glass
+        style={{
+          "--lg-glass-bend": 0.65,
+          "--lg-glass-dispersion": 0.6,
+          "--lg-blur": "6px",
+          "--lg-rim-shine": 0.35,
+        } as React.CSSProperties}
+        className="card stack center">
         <h1>Te-ai înregistrat!</h1>
         <p>Înscrierea echipei <strong>{teamName}</strong> a fost primită.</p>
         <p className="muted">
@@ -192,7 +200,7 @@ export default function FormularPage() {
 
       <h2>Membri ({members.length}/{s.maxPerTeam})</h2>
       {members.map((m, i) => (
-        <div className="panel stack" key={i}>
+        <Glass className="card stack" key={i}>
           <div className="row between">
             <h3>{who(i)}</h3>
             {members.length > s.minPerTeam && <Button onClick={() => setMembers((x) => x.filter((_, j) => j !== i))} destructive>Scoate</Button>}
@@ -201,13 +209,13 @@ export default function FormularPage() {
           {memberFields.map((f) => (
             <DynamicField key={f.id} f={f} value={m.answers[f.id]} onChange={(v) => setMember(i, { answers: { ...m.answers, [f.id]: v } })} />
           ))}
-        </div>
+        </Glass>
       ))}
       {members.length < s.maxPerTeam && <div><Button onClick={() => setMembers((m) => [...m, { name: "", answers: {} }])}>Adaugă membru</Button></div>}
 
       {s.documents.length > 0 && <h2>Documente</h2>}
       {s.documents.map((d) => (
-        <div className="panel stack" key={d.id}>
+        <Glass className="card stack" key={d.id}>
           <h3>{d.title}{d.required && " *"}</h3>
           {d.text && <p className="muted" style={{ whiteSpace: "pre-wrap" }}>{d.text}</p>}
           {d.fileUrl ? (
@@ -232,7 +240,7 @@ export default function FormularPage() {
               </Field>
             );
           })}
-        </div>
+        </Glass>
       ))}
 
       <Button variant="filled" onClick={submit} disabled={busy}>{busy ? "Se trimite…" : "Trimite înscrierea"}</Button>

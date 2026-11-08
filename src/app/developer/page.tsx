@@ -57,7 +57,7 @@ function Media() {
   return (
     <>
     <ThemePanel theme={theme ?? settings.theme} onChange={setTheme} />
-    <div className="panel stack">
+    <Glass className="card stack">
       <h2>Imagini site</h2>
       <p className="muted">Încarcă o imagine sau lipește un URL. Fundalul apare pe tot site-ul, bannerul în capul formularului.</p>
       <ImageUpload label="Fundal global" value={bgV} onChange={setBg} folder="bg" />
@@ -69,7 +69,7 @@ function Media() {
           toast("Salvat.", "success");
         }}>Salvează imaginile și tema</Button>
       </div>
-    </div>
+    </Glass>
     </>
   );
 }
@@ -132,7 +132,7 @@ function Users() {
       <h2>Conturi</h2>
       <BulkBar bulk={bulk} total={userIds.length} onDelete={delMany} />
       {Object.entries(data || {}).map(([id, p]) => (
-        <div className="panel stack" key={id}>
+        <Glass className="card stack" key={id}>
           <div className="row between">
             <RoundCheck checked={bulk.has(id)} onChange={(v) => bulk.toggle(id, v)} label="Selectează" />
             <div className="grow"><h3>{p.name || p.email}</h3><p className="helper">{p.email} · {id}</p></div>
@@ -150,7 +150,7 @@ function Users() {
             )}
             <Button destructive onClick={async () => (await ask("Ștergi profilul?", { ...DELETE, message: "Contul de autentificare rămâne în Firebase Console." })) && remove(ref(db, `users/${id}`))}>Șterge</Button>
           </div>
-        </div>
+        </Glass>
       ))}
     </>
   );

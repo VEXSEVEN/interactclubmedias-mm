@@ -78,7 +78,7 @@ code { font-family: ui-monospace, Menlo, monospace; }
 .card { padding: 22px; border-radius: var(--r); }
 .hero { border-radius: 28px; overflow: hidden; }
 .panel, .stat, .item, .opt, .cred, .block, .input {
-  background: var(--lg-glass);
+  background-color: var(--lg-glass);
   border: 1px solid var(--line);
   -webkit-backdrop-filter: blur(calc(var(--lg-blur) + 6px)) saturate(1.5);
   backdrop-filter: blur(calc(var(--lg-blur) + 6px)) saturate(1.5);

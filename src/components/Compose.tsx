@@ -85,11 +85,11 @@ export default function Compose() {
       <BulkBar bulk={bulk} total={history.length} onDelete={delMany} />
       <div className="list">
         {history.map((e) => (
-          <div className="panel stack" key={e.id}>
+          <Glass className="card stack" key={e.id}>
             <div className="row between"><span className="row" style={{ flexWrap: "nowrap" }}><RoundCheck checked={bulk.has(`${e.target}/${e.id}`)} onChange={(v) => bulk.toggle(`${e.target}/${e.id}`, v)} label="Selectează" /><strong>{e.title}</strong></span><span className="helper">{when(e.ts)} · {label(e.target)}</span></div>
             <p style={{ whiteSpace: "pre-wrap" }}>{e.body}</p>
             <div><Button destructive onClick={async () => { if (await ask("Ștergi mesajul?", DELETE)) await update(ref(db), { [`events/${e.target}/${e.id}`]: null }); }}>Șterge</Button></div>
-          </div>
+          </Glass>
         ))}
         {!history.length && <p className="muted center">Niciun mesaj trimis încă.</p>}
       </div>

@@ -1,6 +1,6 @@
 "use client";
 import { Select } from "./kit";
-import { Button, Input, Switch } from "glisse";
+import { Button, Glass, Input, Switch } from "glisse";
 import { uid } from "@/lib/defaults";
 import type { Action, Condition, FormField, Rule, Variable } from "@/lib/types";
 import { Field } from "./ui";
@@ -16,7 +16,7 @@ export default function RulesBuilder({ variables, rules, fields, onChange }: { v
 
   return (
     <>
-      <div className="panel stack">
+      <Glass className="card stack">
         <h2>Variabile personalizate (int, float, str, bool)</h2>
         <p className="muted">Contoare și valori globale pentru limite sau decizii logice (ex: locuri_liceu).</p>
         {variables.map((v, i) => (
@@ -34,9 +34,9 @@ export default function RulesBuilder({ variables, rules, fields, onChange }: { v
         ))}
         {!variables.length && <p className="helper center">Nu există variabile definite încă.</p>}
         <div><Button variant="filled" onClick={() => onChange({ variables: [...variables, { id: uid("v"), name: `variabila_${variables.length + 1}`, type: "int", value: 10 }] })}>Adaugă variabilă</Button></div>
-      </div>
+      </Glass>
 
-      <div className="panel stack">
+      <Glass className="card stack">
         <h2>Constructor logic pe blocuri</h2>
         <p className="muted">CÂND (eveniment) → DACĂ (condiții ȘI/SAU) → ATUNCI și ALTFEL (acțiuni). Regulile rulează când organizatorul aprobă, respinge sau marchează plata.</p>
         {rules.map((r, i) => (
@@ -84,7 +84,7 @@ export default function RulesBuilder({ variables, rules, fields, onChange }: { v
         ))}
         {!rules.length && <p className="helper center">Nu există blocuri de automatizare create încă.</p>}
         <div><Button variant="filled" onClick={() => onChange({ rules: [...rules, { id: uid("r"), name: `Regulă ${rules.length + 1}`, trigger: "on_paid", logic: "and", conditions: [], actions: [] }] })}>Adaugă bloc nou</Button></div>
-      </div>
+      </Glass>
     </>
   );
 }

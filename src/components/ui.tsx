@@ -1,5 +1,5 @@
 "use client";
-import { Input } from "glisse";
+import { Glass, Input } from "glisse";
 import type { FormField } from "@/lib/types";
 import { DateField, RadioGroup, Select, ToggleRow } from "./kit";
 
@@ -40,11 +40,11 @@ export function DynamicField({ f, value, onChange }: { f: FormField; value: stri
 
 export function StatCard({ label, value, sub }: { label: string; value: React.ReactNode; sub?: React.ReactNode }) {
   return (
-    <div className="stat">
+    <Glass className="stat">
       <span className="stat-label">{label}</span>
       <span className="stat-value">{value}</span>
       {sub && <span className="helper">{sub}</span>}
-    </div>
+    </Glass>
   );
 }
 

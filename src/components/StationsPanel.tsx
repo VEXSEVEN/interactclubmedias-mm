@@ -74,7 +74,7 @@ export default function StationsPanel() {
 function StationRow({ s, code, busy, onSave, onDelete, onMakeCode }: { s: Station; code?: string; busy: boolean; onSave: (p: Partial<Station>) => void; onDelete: () => void; onMakeCode: () => void }) {
   const [v, setV] = useState({ name: s.name, description: s.description || "", capacity: String(s.capacity ?? 6), teamSlots: String(s.teamSlots ?? 2), maxPoints: String(s.maxPoints ?? "") });
   return (
-    <div className="panel stack">
+    <Glass className="card stack">
       <div className="row between">
         <h3>{s.name}</h3>
         {code ? <span className="row"><Pill tone="info">Cod acces</Pill><code className="code">{code}</code><Button onClick={() => navigator.clipboard?.writeText(code)}>Copiază</Button></span>
@@ -91,6 +91,6 @@ function StationRow({ s, code, busy, onSave, onDelete, onMakeCode }: { s: Statio
         <Button destructive onClick={onDelete}>Șterge</Button>
         <Button variant="filled" onClick={() => onSave({ name: v.name.trim() || s.name, description: v.description, capacity: Math.max(1, Number(v.capacity) || 1), teamSlots: Math.max(1, Number(v.teamSlots) || 2), maxPoints: v.maxPoints ? Number(v.maxPoints) : (null as unknown as undefined) })}>Salvează</Button>
       </div>
-    </div>
+    </Glass>
   );
 }

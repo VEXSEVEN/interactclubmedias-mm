@@ -1,7 +1,7 @@
 "use client";
 import { Select } from "./kit";
 import { useRef, useState } from "react";
-import { Button, Input, Switch } from "glisse";
+import { Button, Glass, Input, Switch } from "glisse";
 import { uid } from "@/lib/defaults";
 import { safeName, uploadFile } from "@/lib/storage";
 import type { DocItem, FormField } from "@/lib/types";
@@ -30,7 +30,7 @@ export default function FormBuilder({ fields, documents, captainLabel, onChange 
     <>
       <h2>Întrebări</h2>
       {fields.map((f, i) => (
-        <div className="panel stack field-card" key={f.id}>
+        <Glass className="card stack field-card" key={f.id}>
           <div className="grid2">
             <Field label="Întrebare"><Input value={f.label} onValueChange={(v) => setF(i, { label: v })} /></Field>
             <Field label="Tip">
@@ -69,7 +69,7 @@ export default function FormBuilder({ fields, documents, captainLabel, onChange 
             <Button onClick={() => onChange({ fields: [...fields.slice(0, i + 1), { ...f, id: uid("f") }, ...fields.slice(i + 1)] })}>Duplică</Button>
             <Button destructive onClick={() => onChange({ fields: fields.filter((_, j) => j !== i) })}>Șterge</Button>
           </div>
-        </div>
+        </Glass>
       ))}
       <div><Button onClick={() => onChange({ fields: [...fields, { id: uid("f"), label: "Întrebare nouă", type: "text", required: false, scope: "team" }] })}>Adaugă întrebare</Button></div>
 
@@ -106,7 +106,7 @@ function DocCard({ d, set, up, down, del, first, last, first1 }: { first1: strin
   }
 
   return (
-    <div className="panel stack field-card">
+    <Glass className="card stack field-card">
       <Field label="Titlu document"><Input value={d.title} onValueChange={(v) => set({ title: v })} /></Field>
       <Field label="Instrucțiuni"><textarea className="input" rows={3} value={d.text} onChange={(e) => set({ text: e.target.value })} /></Field>
       <div className="row">
@@ -123,6 +123,6 @@ function DocCard({ d, set, up, down, del, first, last, first1 }: { first1: strin
         <span className="row">Obligatoriu <Switch aria-label="Obligatoriu" checked={d.required} onCheckedChange={(v) => set({ required: v })} /></span>
         <span className="row"><Button onClick={up} disabled={first}>Sus</Button><Button onClick={down} disabled={last}>Jos</Button><Button destructive onClick={del}>Șterge</Button></span>
       </div>
-    </div>
+    </Glass>
   );
 }

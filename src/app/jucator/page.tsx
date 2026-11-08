@@ -107,14 +107,14 @@ function Panel({ teamId, onLogout }: { teamId: string; onLogout: () => void }) {
           </Glass>
 
           {schedule && (
-            <div className="panel stack">
+            <Glass className="card stack">
               <h3>Traseul tău</h3>
               <div className="row between"><span className="muted">Acum (runda {cur + 1})</span><strong>{nowSt ? stName(nowSt) : "Pauză"}</strong></div>
               <div className="row between"><span className="muted">Următoarea</span><strong>{nextSt ? stName(nextSt) : "—"}</strong></div>
-            </div>
+            </Glass>
           )}
 
-          <div className="panel stack">
+          <Glass className="card stack">
             <h3>Punctaj pe stații</h3>
             {stations.map((s) => (
               <div className="row between" key={s.id}>
@@ -123,9 +123,9 @@ function Panel({ teamId, onLogout }: { teamId: string; onLogout: () => void }) {
               </div>
             ))}
             {!stations.length && <p className="muted">Nu există stații încă.</p>}
-          </div>
+          </Glass>
 
-          <div className="panel stack">
+          <Glass className="card stack">
             <h3>Notificări</h3>
             {perm === "unsupported" && <p className="muted">Telefonul acesta nu suportă notificări.</p>}
             {perm === "default" && <Button variant="filled" onClick={enable}>Activează notificările</Button>}
@@ -136,7 +136,7 @@ function Panel({ teamId, onLogout }: { teamId: string; onLogout: () => void }) {
                 <Button onClick={() => showNotification("Test notificare", "Totul funcționează.", `test-${Date.now()}`)}>Testează</Button>
               </div>
             )}
-          </div>
+          </Glass>
           <div><Button onClick={onLogout}>Deconectare</Button></div>
         </>
       )}
@@ -144,10 +144,10 @@ function Panel({ teamId, onLogout }: { teamId: string; onLogout: () => void }) {
       {tab === "stations" && (
         <div className="list">
           {stations.map((s) => (
-            <div className="item" key={s.id}>
+            <Glass className="item" key={s.id}>
               <div className="grow"><h3>{s.name}</h3><p className="helper">{s.description || `Capacitate: ${s.capacity} persoane`}</p></div>
               <Pill tone={s.occupied ? "busy" : "free"}>{s.occupied ? "Ocupată" : "Liberă"} · {Object.keys(s.present || {}).length}/{s.teamSlots ?? 2}</Pill>
-            </div>
+            </Glass>
           ))}
           {!stations.length && <p className="muted center">Nu există stații încă.</p>}
         </div>
@@ -156,9 +156,9 @@ function Panel({ teamId, onLogout }: { teamId: string; onLogout: () => void }) {
       {tab === "board" && (
         <div className="list">
           {board.map((r) => (
-            <div className={`item ${r.team.id === teamId ? "me" : ""}`} key={r.team.id}>
+            <Glass className={`item ${r.team.id === teamId ? "me" : ""}`} key={r.team.id}>
               <span className="rank">{r.rank}</span><span className="grow">{r.team.name}</span><span className="pts">{r.points}</span>
-            </div>
+            </Glass>
           ))}
           {!board.length && <p className="muted center">Nicio echipă încă.</p>}
         </div>

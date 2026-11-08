@@ -47,12 +47,12 @@ export default function RotationPanel() {
 
       {schedule && (
         <>
-          <div className="panel row between">
+          <Glass className="card row between">
             <Button onClick={() => setRound(cur - 1)} disabled={cur <= 0}>Runda anterioară</Button>
             <strong>Runda {cur + 1} / {rounds}</strong>
             <Button variant="filled" onClick={() => setRound(cur + 1)} disabled={cur >= rounds - 1}>Runda următoare</Button>
-          </div>
-          <div className="panel scroll-x">
+          </Glass>
+          <Glass className="card scroll-x">
             <table className="tbl">
               <thead>
                 <tr><th>Runda</th>{stations.map((s) => <th key={s.id}>{s.name}</th>)}</tr>
@@ -69,7 +69,7 @@ export default function RotationPanel() {
                 })}
               </tbody>
             </table>
-          </div>
+          </Glass>
           <Button destructive onClick={async () => (await ask("Ștergi rotația?", DELETE)) && remove(ref(db, "schedule"))}>Șterge rotația</Button>
           <p className="helper">Stații: {stations.map((s) => sn(s.id)).join(", ")}</p>
         </>

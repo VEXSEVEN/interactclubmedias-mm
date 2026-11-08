@@ -135,11 +135,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
  * doar pe desktop (pointer fin) si fara imagine proprie; pe telefon Glisse indoaie fundalul viu (Chromium) sau pastreaza frost-ul.
  */
 function Bg({ url }: { url: string }) {
-  const [fine, setFine] = useState(false);
-  useEffect(() => setFine(window.matchMedia("(pointer: fine)").matches), []);
-  const mark = fine && !url;
   return (
-    <div className="bg" {...(mark ? { "data-glisse-backdrop": "" } : {})} aria-hidden>
+    <div className="bg" data-glisse-backdrop="" aria-hidden>
       {url && <div className="bg-img" style={{ backgroundImage: `url(${url})` }} />}
       {!url && (
         <>

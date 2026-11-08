@@ -256,13 +256,13 @@ function TeamsTab() {
             <p className="helper">Scor total: <strong>{total(scores || {})}</strong></p>
           </Glass>
 
-          <div className="panel stack">
+          <Glass className="card stack">
             <h3>Răspunsuri echipă</h3>
             {settings.fields.filter((f) => f.scope !== "member").map((f) => <p key={f.id}><span className="muted">{f.label}: </span>{show(reg.answers?.[f.id])}</p>)}
-          </div>
+          </Glass>
 
           {members.map((m, i) => (
-            <div className="panel stack" key={i}>
+            <Glass className="card stack" key={i}>
               <h3>{i === 0 && settings.captainLabel ? settings.captainLabel : `Membru ${i + 1}`}: {m.name}</h3>
               {settings.fields.filter((f) => f.scope === "member").map((f) => <p key={f.id}><span className="muted">{f.label}: </span>{show(m.answers?.[f.id])}</p>)}
               {settings.documents.map((d) => {
@@ -270,19 +270,19 @@ function TeamsTab() {
                 if (d.signer === "captain" && i !== 0) return null;
                 return <p key={d.id}><span className="muted">{d.title}: </span>{file ? <a href={file.url} target="_blank" rel="noreferrer">{file.name}</a> : "neîncărcat"}</p>;
               })}
-            </div>
+            </Glass>
           ))}
 
-          <div className="panel stack">
+          <Glass className="card stack">
             <h3>Punctaj pe stații</h3>
             {stations.map((s) => <div className="row between" key={s.id}><span>{s.name}</span><span className="pts">{scores?.[s.id] ?? "—"}</span></div>)}
-          </div>
+          </Glass>
 
-          <div className="panel stack">
+          <Glass className="card stack">
             <h3>Notificări / mesaje primite</h3>
             {Object.entries(events || {}).sort((a, b) => b[1].ts - a[1].ts).map(([k, e]) => <p key={k}><span className="helper">{when(e.ts)} · </span><strong>{e.title}</strong> — {e.body}</p>)}
             {!events && <p className="muted">Niciun eveniment personal.</p>}
-          </div>
+          </Glass>
         </>
       )}
       {!ids.length && <p className="muted center">Nicio echipă înscrisă.</p>}

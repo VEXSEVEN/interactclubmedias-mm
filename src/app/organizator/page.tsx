@@ -108,18 +108,18 @@ function Dashboard() {
         <StatCard label="Stații" value={stations.length} />
       </div>
       {settings.variables.length > 0 && (
-        <div className="panel stack">
+        <Glass className="card stack">
           <h3>Variabile active</h3>
           <div className="row">{settings.variables.map((v) => <Pill key={v.id} tone="info">{v.name}: {String(v.value)}</Pill>)}</div>
-        </div>
+        </Glass>
       )}
-      <div className="panel stack">
+      <Glass className="card stack">
         <h3>Ultimele înscrieri</h3>
         {Object.entries(data || {}).sort((a, b) => b[1].createdAt - a[1].createdAt).slice(0, 6).map(([id, r]) => (
           <div className="row between" key={id}><span>{r.teamName}</span><Pill tone={TONE[r.status]}>{LABEL[r.status]}</Pill></div>
         ))}
         {!regs.length && <p className="muted">Nicio înscriere încă.</p>}
-      </div>
+      </Glass>
     </>
   );
 }
@@ -128,7 +128,7 @@ function Dashboard() {
 function SettingsPanel({ d, patch }: { d: Settings; patch: (p: Partial<Settings>) => void }) {
   return (
     <>
-      <div className="panel stack">
+      <Glass className="card stack">
         <h2>Setări generale eveniment</h2>
         <div className="grid2">
           <Field label="Titlu site / eveniment"><Input value={d.title} onValueChange={(v) => patch({ title: v })} /></Field>
@@ -142,20 +142,20 @@ function SettingsPanel({ d, patch }: { d: Settings; patch: (p: Partial<Settings>
           <Field label="Text footer"><Input value={d.footerText} onValueChange={(v) => patch({ footerText: v })} /></Field>
           <Field label="Primul membru se numește" helper="Gol = „Membru 1” (fără capitan)."><Input value={d.captainLabel} onValueChange={(v) => patch({ captainLabel: v })} placeholder="Capitan" /></Field>
         </div>
-      </div>
-      <div className="panel stack">
+      </Glass>
+      <Glass className="card stack">
         <h2>Imagini</h2>
         <ImageUpload label="Fundal global" value={d.bgUrl} onChange={(v) => patch({ bgUrl: v })} folder="bg" />
         <ImageUpload label="Banner formular" value={d.bannerUrl} onChange={(v) => patch({ bannerUrl: v })} folder="banner" />
-      </div>
-      <div className="panel stack">
+      </Glass>
+      <Glass className="card stack">
         <h2>Regulament</h2>
         <Field label="Titlu"><Input value={d.rulesTitle} onValueChange={(v) => patch({ rulesTitle: v })} /></Field>
         <Field label="Text"><textarea className="input" rows={8} value={d.rulesText} onChange={(e) => patch({ rulesText: e.target.value })} /></Field>
         <Field label={`Butonul „Continuă” se deblochează după ${d.rulesDelaySec} secunde`}>
           <Slider aria-label="Secunde" min={5} max={60} step={1} value={d.rulesDelaySec} onValueChange={(v) => patch({ rulesDelaySec: v })} />
         </Field>
-      </div>
+      </Glass>
     </>
   );
 }
