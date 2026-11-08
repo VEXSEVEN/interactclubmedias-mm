@@ -1,0 +1,10 @@
+node_modules
+.next
+out
+.env*.local
+firebase-debug.log*
+.firebaserc
+*-firebase-adminsdk-*.json
+push-server/*.json
+
+

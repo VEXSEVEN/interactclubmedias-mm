@@ -1,0 +1,130 @@
+{
+  "rules": {
+    ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'developer'",
+    ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'developer'",
+    "users": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer' && !data.exists() && (newData.child('role').val() === 'team' || newData.child('role').val() === 'station')",
+        ".validate": "newData.hasChildren(['role'])",
+        "role": {
+          ".validate": "newData.val() === 'developer' || newData.val() === 'organizer' || newData.val() === 'station' || newData.val() === 'team'"
+        }
+      }
+    },
+    "settings": {
+      ".read": true,
+      ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer'"
+    },
+    "slots": {
+      ".read": true,
+      "$sid": {
+        ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer' || (!data.exists() && newData.val() === true && root.child('settings').child('open').val() !== false)",
+        ".validate": "newData.isBoolean()"
+      }
+    },
+    "names": {
+      "$slug": {
+        ".read": true,
+        ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer' || (!data.exists() && newData.val() === true && root.child('settings').child('open').val() !== false)",
+        ".validate": "newData.isBoolean()"
+      }
+    },
+    "statuses": {
+      "$code": {
+        ".read": true,
+        ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer' || (!data.exists() && newData.child('status').val() === 'pending' && root.child('settings').child('open').val() !== false)",
+        ".validate": "newData.hasChildren(['teamName','status','createdAt'])"
+      }
+    },
+    "credentials": {
+      "$code": {
+        ".read": true,
+        ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer'",
+        ".validate": "newData.hasChildren(['username','password'])"
+      }
+    },
+    "registrations": {
+      ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer'",
+      "$code": {
+        ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer' || (!data.exists() && newData.child('status').val() === 'pending' && root.child('settings').child('open').val() !== false)",
+        ".validate": "newData.hasChildren(['teamName','members','status','createdAt','slug','slotId'])",
+        "teamName": {
+          ".validate": "newData.isString() && newData.val().length >= 2 && newData.val().length <= 40"
+        }
+      }
+    },
+    "teams": {
+      ".read": "auth != null",
+      "$tid": {
+        ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer'",
+        ".validate": "newData.hasChildren(['name','size','createdAt'])"
+      }
+    },
+    "scores": {
+      ".read": "auth != null",
+      "$tid": {
+        ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer'",
+        "$sid": {
+          ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'station' && root.child('users').child(auth.uid).child('stationId').val() === $sid && !data.exists()",
+          ".validate": "newData.isNumber() && newData.val() >= 0 && newData.val() <= 1000"
+        }
+      }
+    },
+    "stations": {
+      ".read": "auth != null",
+      "$sid": {
+        ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer'",
+        "occupied": {
+          ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'station' && root.child('users').child(auth.uid).child('stationId').val() === $sid",
+          ".validate": "newData.isBoolean()"
+        },
+        "updatedAt": {
+          ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'station' && root.child('users').child(auth.uid).child('stationId').val() === $sid"
+        },
+        "present": {
+          "$tid": {
+            ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'station' && root.child('users').child(auth.uid).child('stationId').val() === $sid",
+            ".validate": "newData.isBoolean()"
+          }
+        },
+        "visited": {
+          "$tid": {
+            ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'station' && root.child('users').child(auth.uid).child('stationId').val() === $sid && !data.exists()",
+            ".validate": "newData.isBoolean()"
+          }
+        }
+      }
+    },
+    "schedule": {
+      ".read": "auth != null",
+      ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer'"
+    },
+    "pushTokens": {
+      "$token": {
+        ".write": "!newData.exists() || (newData.hasChildren(['ts', 'role']) && newData.child('role').isString())"
+      }
+    },
+    "stationSecrets": {
+      ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer'",
+      ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer'"
+    },
+    "stationCodes": {
+      "$code": {
+        ".read": true,
+        ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer'",
+        ".validate": "newData.isString()"
+      }
+    },
+    "events": {
+      ".read": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer'",
+      "$t": {
+        ".read": "auth != null && ($t === '_all' || ($t === '_teams' && root.child('users').child(auth.uid).child('role').val() === 'team') || ($t === '_stations' && root.child('users').child(auth.uid).child('role').val() === 'station') || root.child('users').child(auth.uid).child('teamId').val() === $t)",
+        "$id": {
+          ".write": "auth != null && root.child('users').child(auth.uid).child('role').val() === 'organizer' || (auth != null && root.child('users').child(auth.uid).child('role').val() === 'station' && newData.exists() && !data.exists() && (newData.child('type').val() === 'score' || newData.child('type').val() === 'free'))",
+          ".validate": "newData.hasChildren(['type', 'title', 'body', 'ts'])"
+        }
+      }
+    }
+  }
+}

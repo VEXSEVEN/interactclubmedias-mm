@@ -1,0 +1,17 @@
+# Configuration for Firebase App Hosting
+# Docs: https://firebase.google.com/docs/app-hosting/configure
+
+runConfig:
+  minInstances: 0
+  maxInstances: 5
+  concurrency: 80
+  cpu: 1
+  memoryMiB: 512
+
+env:
+  - variable: NEXT_PUBLIC_FIREBASE_VAPID_KEY
+    value: "BBOupc1K4vJhjK2Ke9p1gWwlzYLj0G4hIK9Jm5tc1tRBiiRFXj7oENPKO73nWNQVFj2tJ_ZMM5LGxunX0HIjMxQ"
+    availability:
+      - BUILD
+      - RUNTIME
+
