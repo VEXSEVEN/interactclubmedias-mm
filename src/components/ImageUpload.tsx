@@ -34,7 +34,7 @@ export default function ImageUpload({ label, value, onChange, folder }: { label:
       )}
       <div className="row">
         <input ref={inp} type="file" accept="image/*" hidden onChange={(e) => pick(e.target.files?.[0])} />
-        <Button variant="filled" onClick={() => inp.current?.click()} disabled={busy}>
+        <Button onClick={() => inp.current?.click()} disabled={busy}>
           {busy ? "Se încarcă…" : value ? "Schimbă imaginea" : "Încarcă imagine"}
         </Button>
         {value && <Button destructive onClick={() => onChange("")}>Elimină</Button>}

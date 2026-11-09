@@ -31,7 +31,7 @@ export default function Onboarding({ profile }: { profile: Profile | null }) {
         <span className="logo"><Icon n="bell" size={26} /></span>
         <h2>Activează notificările</h2>
         <p className="muted">Primești o notificare când ți se adaugă punctaj, când se eliberează o stație și când organizatorii îți trimit un mesaj — chiar și cu aplicația închisă.</p>
-        <Button variant="filled" onClick={async () => setPerm(await askPermission())}>Permite notificările</Button>
+        <Button onClick={async () => setPerm(await askPermission())}>Permite notificările</Button>
         <Button onClick={() => { sessionStorage.setItem("imc_later", "1"); setLater(true); }}>Mai târziu</Button>
       </Glass>
     </div>

@@ -61,7 +61,15 @@ function Organizer() {
   async function save() {
     if (!d) return;
     try {
-      await update(ref(db), { settings: JSON.parse(JSON.stringify(d)) });
+      await update(ref(db), {
+        settings: {
+          ...JSON.parse(JSON.stringify(d)),
+          documents: d.documents || [],
+          fields: d.fields || [],
+          variables: d.variables || [],
+          rules: d.rules || [],
+        },
+      });
       setDirty(false);
       toast("Salvat.", "success");
     } catch {
@@ -83,7 +91,7 @@ function Organizer() {
       {editing && d && (
         <Glass className="savebar">
           <span className="helper">{dirty ? "Ai modificări nesalvate." : "Salvează formularul pentru a aplica modificările."}</span>
-          <Button variant="filled" onClick={save}>Salvează</Button>
+          <Button onClick={save}>Salvează</Button>
         </Glass>
       )}
     </DashShell>
@@ -289,7 +297,7 @@ function Regs() {
               })}
               <div className="row">
                 {r.status === "pending" && <Button onClick={() => approve(id, r)}>Aprobă</Button>}
-                {(r.status === "pending" || r.status === "approved") && <Button variant="filled" disabled={busy === id} onClick={() => paid(id, r)}>{busy === id ? "Se creează…" : "Marchează achitat"}</Button>}
+                {(r.status === "pending" || r.status === "approved") && <Button disabled={busy === id} onClick={() => paid(id, r)}>{busy === id ? "Se creează…" : "Marchează achitat"}</Button>}
                 {r.status !== "rejected" && r.status !== "paid" && <Button destructive onClick={() => reject(id, r)}>Respinge</Button>}
                 <Button destructive onClick={() => del(id, r)}>Șterge</Button>
               </div>

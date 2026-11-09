@@ -40,7 +40,7 @@ export default function RotationPanel() {
           {teams.length} echipe{settings.maxTeams ? ` din maxim ${settings.maxTeams}` : ""} · {stations.length} stații · la o stație pot fi {k} {k === 1 ? "echipă" : "echipe"} odată
           (capacitate stație ÷ {per} persoane/echipă). Echipele nu se întâlnesc la aceeași stație în aceeași rundă.
         </p>
-        <Button variant="filled" onClick={generate} disabled={!teams.length || !stations.length}>
+        <Button onClick={generate} disabled={!teams.length || !stations.length}>
           {schedule ? "Regenerează rotația" : "Generează rotația"}
         </Button>
       </Glass>
@@ -50,7 +50,7 @@ export default function RotationPanel() {
           <Glass className="card row between">
             <Button onClick={() => setRound(cur - 1)} disabled={cur <= 0}>Runda anterioară</Button>
             <strong>Runda {cur + 1} / {rounds}</strong>
-            <Button variant="filled" onClick={() => setRound(cur + 1)} disabled={cur >= rounds - 1}>Runda următoare</Button>
+            <Button onClick={() => setRound(cur + 1)} disabled={cur >= rounds - 1}>Runda următoare</Button>
           </Glass>
           <Glass className="card scroll-x">
             <table className="tbl">

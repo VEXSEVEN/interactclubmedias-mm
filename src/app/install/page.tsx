@@ -63,14 +63,14 @@ export default function InstallPage() {
       ) : (
         <p className="muted">Aplicația e un shortcut pe telefon (PWA): se deschide ca o aplicație obișnuită, îți arată punctajul în timp real și îți trimite notificări. Te-am detectat automat — poți schimba sistemul de mai jos.</p>
       )}
-
-      <SegmentedControl aria-label="Sistem" value={os} onValueChange={(v) => setOs(v as Platform)} items={[{ value: "ios", label: "iPhone" }, { value: "android", label: "Android" }, { value: "desktop", label: "Computer" }]} />
-
+      <div style={{ width: "100%" }}>
+        <SegmentedControl aria-label="Sistem" value={os} onValueChange={(v) => setOs(v as Platform)} items={[{ value: "ios", label: "iPhone" }, { value: "android", label: "Android" }, { value: "desktop", label: "Computer" }]} />
+      </div>
       {!standalone && (os === "android" || os === "desktop") && (
         <Glass className="card stack center">
           <h2>Instalare rapidă</h2>
           {available ? (
-            <Button variant="filled" onClick={async () => { const ok = await install(); toast(ok ? "Aplicația se instalează…" : "Instalarea a fost anulată.", ok ? "success" : "info"); }}>Instalează aplicația</Button>
+            <Button onClick={async () => { const ok = await install(); toast(ok ? "Aplicația se instalează…" : "Instalarea a fost anulată.", ok ? "success" : "info"); }}>Instalează aplicația</Button>
           ) : (
             <p className="muted">Butonul apare când browserul permite instalarea. Dacă nu îl vezi, urmează pașii de mai jos.</p>
           )}

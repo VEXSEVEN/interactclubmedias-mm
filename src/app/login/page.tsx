@@ -38,7 +38,7 @@ export default function LoginPage() {
       <Glass className="card stack center">
         <h2>Ești conectat</h2>
         <p className="muted">Rol: {profile.role}</p>
-        <Button variant="filled" onClick={() => router.push(profile.role === "developer" ? "/developer" : profile.role === "organizer" ? "/organizator" : "/statie")}>Continuă</Button>
+        <Button onClick={() => router.push(profile.role === "developer" ? "/developer" : profile.role === "organizer" ? "/organizator" : "/statie")}>Continuă</Button>
         <Button onClick={() => logout()}>Schimbă contul</Button>
       </Glass>
     );
@@ -51,13 +51,13 @@ export default function LoginPage() {
         <>
           <p className="muted">Fiecare stație are un cod propriu de 8 caractere, primit de la organizator. Codul deschide doar stația ta.</p>
           <Field label="Cod de acces stație"><Input value={code} onValueChange={(v) => setCode(v.toUpperCase().trim())} maxLength={8} placeholder="ABCD2345" onKeyDown={(e) => e.key === "Enter" && go()} /></Field>
-          <Button variant="filled" onClick={go} disabled={busy || code.length < 8}>{busy ? "Se verifică…" : "Intră în stație"}</Button>
+          <Button onClick={go} disabled={busy || code.length < 8}>{busy ? "Se verifică…" : "Intră în stație"}</Button>
         </>
       ) : (
         <>
           <Field label="Email"><Input type="email" value={email} onValueChange={setEmail} autoComplete="username" /></Field>
           <Field label="Parolă"><Input type="password" value={pass} onValueChange={setPass} autoComplete="current-password" onKeyDown={(e) => e.key === "Enter" && go()} /></Field>
-          <Button variant="filled" onClick={go} disabled={busy || !email || !pass}>{busy ? "Se conectează…" : "Conectează-te"}</Button>
+          <Button onClick={go} disabled={busy || !email || !pass}>{busy ? "Se conectează…" : "Conectează-te"}</Button>
         </>
       )}
     </Glass>

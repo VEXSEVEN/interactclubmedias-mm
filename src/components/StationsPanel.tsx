@@ -55,7 +55,7 @@ export default function StationsPanel() {
       <Glass className="card stack">
         <h2>Stație nouă</h2>
         <Input value={name} onValueChange={setName} placeholder="Numele stației" onKeyDown={(e) => e.key === "Enter" && add()} />
-        <Button variant="filled" onClick={add} disabled={!name.trim() || busy === "new"}>{busy === "new" ? "Se creează…" : "Adaugă stația"}</Button>
+        <Button onClick={add} disabled={!name.trim() || busy === "new"}>{busy === "new" ? "Se creează…" : "Adaugă stația"}</Button>
       </Glass>
       {stations.map((s) => (
         <StationRow key={s.id} s={s} code={secrets?.[s.id]} busy={busy === s.id}
@@ -78,7 +78,7 @@ function StationRow({ s, code, busy, onSave, onDelete, onMakeCode }: { s: Statio
       <div className="row between">
         <h3>{s.name}</h3>
         {code ? <span className="row"><Pill tone="info">Cod acces</Pill><code className="code">{code}</code><Button onClick={() => navigator.clipboard?.writeText(code)}>Copiază</Button></span>
-          : <Button variant="filled" onClick={onMakeCode} disabled={busy}>{busy ? "Se generează…" : "Generează cod de acces"}</Button>}
+          : <Button onClick={onMakeCode} disabled={busy}>{busy ? "Se generează…" : "Generează cod de acces"}</Button>}
       </div>
       <Field label="Nume"><Input value={v.name} onValueChange={(x) => setV({ ...v, name: x })} /></Field>
       <Field label="Descriere"><Input value={v.description} onValueChange={(x) => setV({ ...v, description: x })} /></Field>
@@ -89,7 +89,7 @@ function StationRow({ s, code, busy, onSave, onDelete, onMakeCode }: { s: Statio
       </div>
       <div className="row between">
         <Button destructive onClick={onDelete}>Șterge</Button>
-        <Button variant="filled" onClick={() => onSave({ name: v.name.trim() || s.name, description: v.description, capacity: Math.max(1, Number(v.capacity) || 1), teamSlots: Math.max(1, Number(v.teamSlots) || 2), maxPoints: v.maxPoints ? Number(v.maxPoints) : (null as unknown as undefined) })}>Salvează</Button>
+        <Button onClick={() => onSave({ name: v.name.trim() || s.name, description: v.description, capacity: Math.max(1, Number(v.capacity) || 1), teamSlots: Math.max(1, Number(v.teamSlots) || 2), maxPoints: v.maxPoints ? Number(v.maxPoints) : (null as unknown as undefined) })}>Salvează</Button>
       </div>
     </Glass>
   );

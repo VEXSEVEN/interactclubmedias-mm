@@ -76,7 +76,7 @@ export default function Compose() {
         </Field>
         <Field label="Titlu"><Input value={title} onValueChange={setTitle} maxLength={80} /></Field>
         <Field label="Mesaj"><textarea className="input area" rows={4} value={body} onChange={(e) => setBody(e.target.value)} maxLength={500} /></Field>
-        <Button variant="filled" onClick={send} disabled={busy}>{busy ? "Se trimite…" : "Trimite mesajul"}</Button>
+        <Button onClick={send} disabled={busy}>{busy ? "Se trimite…" : "Trimite mesajul"}</Button>
         {tokens && <p className="helper">Dispozitive înregistrate pentru push: <strong>{Object.keys(tokens).length}</strong></p>}
         <p className="helper">Destinatarii îl primesc ca notificare. Dacă aplicația era închisă, îl găsesc oricum în Mesaje la următoarea deschidere.</p>
       </Glass>

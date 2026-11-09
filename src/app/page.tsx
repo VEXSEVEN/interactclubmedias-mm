@@ -135,7 +135,7 @@ export default function FormularPage() {
         </p>
         <span className="helper">Codul înscrierii tale — păstrează-l:</span>
         <div className="teamcode">{code}</div>
-        <Link href="/status"><Button variant="filled">Vezi statusul înscrierii</Button></Link>
+        <Link href="/status"><Button >Vezi statusul înscrierii</Button></Link>
         <Link href="/install"><Button>Instalează aplicația pe telefon</Button></Link>
       </Glass>
     );
@@ -165,7 +165,7 @@ export default function FormularPage() {
         <Glass className="card stack">
           <h2>{s.rulesTitle}</h2>
           <div className="rules">{s.rulesText}</div>
-          <Button variant="filled" disabled={left !== 0} onClick={() => setStage("form")}>
+          <Button  disabled={left !== 0} onClick={() => setStage("form")}>
             {left ? `Citește regulamentul… ${left}s` : "Am citit și continui"}
           </Button>
         </Glass>
@@ -243,7 +243,7 @@ export default function FormularPage() {
         </Glass>
       ))}
 
-      <Button variant="filled" onClick={submit} disabled={busy}>{busy ? "Se trimite…" : "Trimite înscrierea"}</Button>
+      <Button  onClick={submit} disabled={busy}>{busy ? "Se trimite…" : "Trimite înscrierea"}</Button>
       {s.footerText && <p className="helper center">{s.footerText}</p>}
     </>
   );

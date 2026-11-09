@@ -54,19 +54,6 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     if (live) { try { localStorage.setItem(THEME_CACHE_KEY, JSON.stringify(settings.theme)); } catch {} }
   }, [settings.theme, live]);
 
-  useEffect(() => {
-    // lumina care urmareste cursorul pe suprafetele de sticla
-    const move = (e: PointerEvent) => {
-      const el = (e.target as HTMLElement | null)?.closest?.(".card, .panel, .stat, .hero") as HTMLElement | null;
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      el.style.setProperty("--mx", `${e.clientX - r.left}px`);
-      el.style.setProperty("--my", `${e.clientY - r.top}px`);
-    };
-    document.addEventListener("pointermove", move, { passive: true });
-    return () => document.removeEventListener("pointermove", move);
-  }, []);
-
   const role = profile?.role;
   const dashboard = path.startsWith("/organizator") || path.startsWith("/developer");
   const inboxLabel = (<span className="tablabel">Mesaje{unread > 0 && <b className="badge">{unread > 9 ? "9+" : unread}</b>}</span>);
@@ -104,8 +91,8 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
               </div>
             )}
             <Glass className="dock-aside" key="aside">
-              <Button icon={<Icon n="back" size={20} />} aria-label="Înapoi la site" onClick={() => router.push("/")} />
-              {user && <Button icon={<Icon n="out" size={20} />} aria-label="Deconectare" onClick={() => { logout(); router.push("/"); }} />}
+              <Button icon={<Icon n="back"/>} aria-label="Înapoi la site"  onClick={() => router.push("/")} />
+              {user && <Button icon={<Icon n="out"/>} aria-label="Deconectare" onClick={() => { logout(); router.push("/"); }} />}
             </Glass>
           </>
         ) : (

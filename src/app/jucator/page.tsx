@@ -22,8 +22,14 @@ export default function JucatorPage() {
     setBusy(true);
     try {
       await loginTeam(name.trim(), pass.trim());
-    } catch {
-      toast("Utilizator sau parolă incorecte.", "error");
+    } catch (err: unknown) {
+      console.error("Login team error:", err);
+      const code = (err as { code?: string })?.code;
+      if (code === "auth/invalid-credential" || code === "auth/wrong-password" || code === "auth/user-not-found") {
+        toast("Nume de echipă sau parolă incorecte.", "error");
+      } else {
+        toast((err as Error)?.message || "Eroare la autentificare.", "error");
+      }
     } finally {
       setBusy(false);
     }
@@ -45,7 +51,7 @@ export default function JucatorPage() {
       <Glass className="card stack center">
         <h1>Instalează aplicația</h1>
         <p className="muted">Contul echipei se folosește doar în aplicație. Din browser poți completa formularul și vedea statusul înscrierii și datele contului.</p>
-        <Link href="/install"><Button variant="filled">Cum instalez aplicația</Button></Link>
+        <Link href="/install"><Button  >Cum instalez aplicația</Button></Link>
         <Link href="/status"><Button>Vezi datele contului (Status)</Button></Link>
       </Glass>
     );
@@ -56,7 +62,7 @@ export default function JucatorPage() {
       <p className="muted">Utilizator = numele echipei. Parola o găsești pe pagina de status după confirmarea plății.</p>
       <Field label="Numele echipei"><Input value={name} onValueChange={setName} autoComplete="username" autoCapitalize="none" /></Field>
       <Field label="Parolă"><Input type="password" value={pass} onValueChange={setPass} autoComplete="current-password" onKeyDown={(e) => e.key === "Enter" && go()} /></Field>
-      <Button variant="filled" onClick={go} disabled={busy || !name || !pass}>{busy ? "Se conectează…" : "Intră"}</Button>
+      <Button onClick={go} disabled={busy || !name || !pass}>{busy ? "Se conectează…" : "Intră"}</Button>
       <p className="helper center">Nu ai parola? <Link href="/status">Verifică statusul înscrierii</Link></p>
     </Glass>
   );
@@ -128,7 +134,7 @@ function Panel({ teamId, onLogout }: { teamId: string; onLogout: () => void }) {
           <Glass className="card stack">
             <h3>Notificări</h3>
             {perm === "unsupported" && <p className="muted">Telefonul acesta nu suportă notificări.</p>}
-            {perm === "default" && <Button variant="filled" onClick={enable}>Activează notificările</Button>}
+            {perm === "default" && <Button onClick={enable}>Activează notificările</Button>}
             {perm === "denied" && <p className="muted">Notificările sunt blocate. Activează-le din setările telefonului pentru această aplicație{isIOS() ? " (Setări → Notificări)" : ""}.</p>}
             {perm === "granted" && (
               <div className="row between">

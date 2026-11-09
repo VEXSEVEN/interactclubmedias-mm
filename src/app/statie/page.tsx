@@ -64,7 +64,7 @@ function Station() {
     const nowBusy = next.size >= slots;
     try {
       await update(ref(db, `stations/${sid}`), { [`present/${id}`]: on ? true : null, ...(on ? { [`visited/${id}`]: true } : {}), occupied: nowBusy, updatedAt: Date.now() });
-      if (wasBusy && !nowBusy) sendEvent("_teams", { type: "free", title: "Stație eliberată", body: `${st?.name} este liberă acum.` }).catch(() => {});
+      if (wasBusy && !nowBusy) sendEvent("_teams", { type: "free", title: "Stație eliberată", body: `${st?.name} este liberă acum.` }).catch(() => { });
     } catch {
       toast("Nu ai drepturi pentru această acțiune.", "error");
     }
@@ -79,7 +79,7 @@ function Station() {
     try {
       await set(ref(db, `scores/${teamId}/${sid}`), n);
       toast(`${n} puncte salvate pentru ${nm(teamId)}.`, "success");
-      sendEvent(teamId, { type: "score", title: "Punctaj adăugat", body: `${st?.name}: ${n} puncte` }).catch(() => {});
+      sendEvent(teamId, { type: "score", title: "Punctaj adăugat", body: `${st?.name}: ${n} puncte` }).catch(() => { });
       setPoints("");
       if (release && here.includes(teamId)) await setPresent(teamId, false);
     } catch {
@@ -120,7 +120,7 @@ function Station() {
               {expected.length > 0 && <optgroup label="Așteptate în runda curentă">{expected.map((id) => <option key={id} value={id}>{nm(id)}</option>)}</optgroup>}
               <optgroup label="Toate echipele">{candidates.map((t) => <option key={t.id} value={t.id}>{t.name}</option>)}</optgroup>
             </Select>
-            <Button variant="filled" disabled={!adding} onClick={() => { setPresent(adding, true); setAdding(""); }}>Check-in</Button>
+            <Button disabled={!adding} onClick={() => { setPresent(adding, true); setAdding(""); }}>Check-in</Button>
           </div>
         )}
       </Glass>
@@ -138,7 +138,7 @@ function Station() {
           <Input type="number" inputMode="numeric" value={points} onValueChange={setPoints} onKeyDown={(e) => e.key === "Enter" && addScore()} />
         </Field>
         <ToggleRow checked={release} onChange={setRelease}>Eliberează echipa după salvare</ToggleRow>
-        <Button variant="filled" onClick={addScore} disabled={!teamId || points === "" || (!!teamId && scores[teamId]?.[sid] !== undefined)}>Salvează punctajul (o singură dată)</Button>
+        <Button onClick={addScore} disabled={!teamId || points === "" || (!!teamId && scores[teamId]?.[sid] !== undefined)}>Salvează punctajul (o singură dată)</Button>
         {teamId && scores[teamId]?.[sid] !== undefined && <p className="helper">Echipa are deja {scores[teamId][sid]} puncte aici — nu se mai poate modifica de la stație.</p>}
       </Glass>
 

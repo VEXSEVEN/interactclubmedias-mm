@@ -30,7 +30,7 @@ export default function FormBuilder({ fields, documents, captainLabel, onChange 
     <>
       <h2>Întrebări</h2>
       {fields.map((f, i) => (
-        <Glass className="card stack field-card" key={f.id}>
+        <Glass className="card stack field-card" key={i}>
           <div className="grid2">
             <Field label="Întrebare"><Input value={f.label} onValueChange={(v) => setF(i, { label: v })} /></Field>
             <Field label="Tip">
@@ -111,7 +111,7 @@ function DocCard({ d, set, up, down, del, first, last, first1 }: { first1: strin
       <Field label="Instrucțiuni"><textarea className="input" rows={3} value={d.text} onChange={(e) => set({ text: e.target.value })} /></Field>
       <div className="row">
         <input ref={inp} type="file" hidden onChange={(e) => pick(e.target.files?.[0])} />
-        <Button variant="filled" onClick={() => inp.current?.click()} disabled={busy}>{busy ? "Se încarcă…" : d.fileUrl ? "Înlocuiește fișierul" : "Încarcă fișierul de descărcat"}</Button>
+        <Button onClick={() => inp.current?.click()} disabled={busy}>{busy ? "Se încarcă…" : d.fileUrl ? "Înlocuiește fișierul" : "Încarcă fișierul de descărcat"}</Button>
         {d.fileUrl && <a href={d.fileUrl} target="_blank" rel="noreferrer">{d.fileName || "Vezi fișierul"}</a>}
       </div>
       <Field label="Cine încarcă varianta semnată">

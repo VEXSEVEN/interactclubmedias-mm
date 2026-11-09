@@ -50,7 +50,7 @@ export function ConfirmProvider({ children }: { children: React.ReactNode }) {
             </div>
             <div className="dialog-actions">
               <Button onClick={() => done(false)}>{st.opts.cancelLabel || "Anulează"}</Button>
-              <Button variant="filled" destructive={st.opts.destructive} onClick={() => done(true)} autoFocus>{st.opts.confirmLabel || "Confirmă"}</Button>
+              <Button destructive={st.opts.destructive} onClick={() => done(true)} autoFocus>{st.opts.confirmLabel || "Confirmă"}</Button>
             </div>
           </Glass>
         </div>

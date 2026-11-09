@@ -37,7 +37,7 @@ export default function StatusPage() {
         <Field label="Codul înscrierii (primit după trimiterea formularului)">
           <Input value={input} onValueChange={(v) => setInput(v.toUpperCase().trim())} maxLength={8} placeholder="ABCD2345" onKeyDown={(e) => e.key === "Enter" && (setCode(input), localStorage.setItem("imc_reg", input))} />
         </Field>
-        <Button variant="filled" onClick={() => { setCode(input); localStorage.setItem("imc_reg", input); }} disabled={input.length < 8}>Verifică</Button>
+        <Button onClick={() => { setCode(input); localStorage.setItem("imc_reg", input); }} disabled={input.length < 8}>Verifică</Button>
       </Glass>
 
       {code && !loading && !st && <Glass className="card"><p className="muted center">Nu există nicio înscriere cu acest cod.</p></Glass>}
@@ -51,7 +51,7 @@ export default function StatusPage() {
               <div className="cred"><span className="helper">Utilizator (numele echipei)</span><strong>{cred.username}</strong><Button onClick={() => copy(cred.username)}>Copiază</Button></div>
               <div className="cred"><span className="helper">Parolă</span><strong className="mono">{cred.password}</strong><Button onClick={() => copy(cred.password)}>Copiază</Button></div>
               <p className="helper">Contul se folosește doar în aplicația instalată pe telefon. Instalează-o, apoi intră cu datele de mai sus.</p>
-              <Link href="/install"><Button variant="filled">Instalează aplicația</Button></Link>
+              <Link href="/install"><Button  >Instalează aplicația</Button></Link>
               <Link href="/jucator"><Button>Intră în contul echipei</Button></Link>
             </div>
           )}

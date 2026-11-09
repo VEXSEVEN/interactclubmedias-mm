@@ -4,18 +4,19 @@ const mix = (a: string, pa: number, b: string) => `color-mix(in srgb, ${a} ${pa}
 
 /**
  * Aplica tema pe tot site-ul prin variabile CSS.
- * - Textul se calculeaza din culoarea principala (accent): o schimbi si se schimba tot textul.
- * - Subtitlurile = textul amestecat cu `subMix`% (implicit 10%) din culoarea fundalului.
+ * - In dark mode: textul e alb-albăstrui, sticla e neagra semi-transparenta
+ * - In light mode: textul derivat din accent, sticla alba semi-transparenta
  */
 export function applyTheme(t: Theme) {
   if (typeof document === "undefined") return;
   const r = document.documentElement;
   const dark = t.mode === "dark";
   const set = (k: string, v: string | number) => r.style.setProperty(k, String(v));
-  // In dark mode: textul implicit e alb-albăstrui (#f0f4ff), NU derivat din accent
-  // astfel butonele Glisse au text alb pe fundal sticla inchisa
-  const ink = t.text || (dark ? mix(t.accent, 20, "#f0f4ff") : mix(t.accent, 72, "#050b1a"));
+
+  // Text: in dark mode aproape alb, in light mode derivat din accent (inchis)
+  const ink = t.text || (dark ? mix(t.accent, 15, "#f4f6ff") : mix(t.accent, 72, "#050b1a"));
   const sub = mix(ink, 100 - (t.subMix ?? 10), t.bg);
+
   r.dataset.theme = t.mode;
   r.style.colorScheme = t.mode;
   set("--ink", ink);
@@ -31,15 +32,35 @@ export function applyTheme(t: Theme) {
   set("--free", t.free || "#0a8f5a");
   set("--busy", t.busy || "#d6342a");
   set("--warn", t.warn || "#b7791f");
-  // Glisse
+
+  // ---- Glisse variables ----
+  // Foreground: textul pe componente Glisse (butoane, taburi)
   set("--lg-foreground", ink);
   set("--lg-muted", sub);
+
+  // Fill: culoarea butoanelor filled si a sliderului
   set("--lg-fill", t.filled || t.accent);
   set("--lg-tab-selected", t.tabSelected || t.accent);
-  const tint = t.glassTint || "#ffffff";
-  const a = t.glassAlpha ?? (dark ? 0.07 : 0.16);
+
+  // Glass: in dark mode tinta neagra, in light mode tinta alba (sau custom glassTint)
+  const tint = t.glassTint || (dark ? "#1a1a2e" : "#ffffff");
+  const a = t.glassAlpha ?? (dark ? 0.55 : 0.16);
   set("--lg-glass", `color-mix(in srgb, ${tint} ${Math.round(a * 100)}%, transparent)`);
-  set("--lg-panel", `color-mix(in srgb, ${tint} ${Math.min(62, Math.round(a * 260))}%, transparent)`);
+  set("--lg-panel", `color-mix(in srgb, ${tint} ${Math.min(72, Math.round(a * 260))}%, transparent)`);
+
+  // Dark mode: sticla activa (hover/press) mai deschisa
+  if (dark) {
+    set("--lg-glass-active", `color-mix(in srgb, ${tint} ${Math.round(Math.min(a * 1.6, 0.85) * 100)}%, transparent)`);
+    set("--lg-edge", "rgb(255 255 255 / 0.1)");
+    set("--lg-segment-label", ink);
+    set("--lg-segment-thumb", "rgb(255 255 255 / 0.18)");
+  } else {
+    r.style.removeProperty("--lg-glass-active");
+    r.style.removeProperty("--lg-edge");
+    r.style.removeProperty("--lg-segment-label");
+    r.style.removeProperty("--lg-segment-thumb");
+  }
+
   set("--lg-glass-bend", t.bend);
   set("--lg-glass-dispersion", 0.4);
   set("--lg-blur", `${t.blur}px`);

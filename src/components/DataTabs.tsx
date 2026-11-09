@@ -18,8 +18,12 @@ export default function DataTabs() {
   const [tab, setTab] = useState("rtdb");
   return (
     <>
-      <SegmentedControl aria-label="Sursă date" value={tab} onValueChange={setTab}
-        items={[{ value: "storage", label: "Storage" }, { value: "firestore", label: "Firestore" }, { value: "rtdb", label: "Realtime DB" }, { value: "teams", label: "Echipe" }]} />
+      <div style={{width: "100%"}}>
+      <SegmentedControl aria-label="Range" value={tab} onValueChange={setTab} items={[
+        { value: "storage", label: "Storage" },
+        { value: "firestore", label: "Firestore" }, 
+        { value: "rtdb", label: "Realtime DB" }, 
+        { value: "teams", label: "Echipe" }]} /></div>
       {tab === "storage" && <StorageTab />}
       {tab === "firestore" && <FirestoreTab />}
       {tab === "rtdb" && <RtdbTab />}
@@ -52,7 +56,7 @@ function RtdbTab() {
       <Input value={path} onValueChange={setPath} onKeyDown={(e) => e.key === "Enter" && load()} />
       <div className="row">
         <Button onClick={() => load()}>Încarcă</Button>
-        <Button variant="filled" onClick={async () => {
+        <Button onClick={async () => {
           try {
             if (path === "/" && !(await ask("Suprascrii TOATĂ baza de date?", { confirmLabel: "Suprascrie", destructive: true }))) return;
             await set(ref(db, path === "/" ? undefined : path), JSON.parse(text));
@@ -154,6 +158,7 @@ function StorageFolder({ path, name, onDeleted }: { path: string; name: string; 
     </details>
   );
 }
+
 function StorageTab() {
   return (
     <>
@@ -197,13 +202,13 @@ function FirestoreTab() {
       <h2>Firestore</h2>
       <p className="muted">Aplicația folosește Realtime Database; aici poți inspecta și o bază Firestore, dacă o ai activată (necesită reguli care permit citirea).</p>
       <Input value={col} onValueChange={setCol} placeholder="colecție, ex: users" onKeyDown={(e) => e.key === "Enter" && load()} />
-      <div className="row"><Button variant="filled" onClick={load}>Încarcă colecția</Button></div>
+      <div className="row"><Button onClick={load}>Încarcă colecția</Button></div>
       {docs.map((d, i) => (
         <div className="panel stack" key={d.id}>
           <strong>{d.id}</strong>
           <textarea className="input area mono-area" rows={6} value={d.text} onChange={(e) => setDocs((x) => x.map((y, j) => (j === i ? { ...y, text: e.target.value } : y)))} />
           <div className="row">
-            <Button variant="filled" onClick={() => put(d.id, d.text)}>Salvează</Button>
+            <Button onClick={() => put(d.id, d.text)}>Salvează</Button>
             <Button destructive onClick={async () => {
               if (!(await ask(`Ștergi ${d.id}?`, DELETE))) return;
               const fs = await import("firebase/firestore");

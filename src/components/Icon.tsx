@@ -15,3 +15,4 @@ export default function Icon({ n, size = 22 }: { n: string; size?: number }) {
   const C = ICONS[n] || Check;
   return <C size={size} strokeWidth={1.9} aria-hidden />;
 }
+

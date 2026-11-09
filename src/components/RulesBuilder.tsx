@@ -33,7 +33,7 @@ export default function RulesBuilder({ variables, rules, fields, onChange }: { v
           </div>
         ))}
         {!variables.length && <p className="helper center">Nu există variabile definite încă.</p>}
-        <div><Button variant="filled" onClick={() => onChange({ variables: [...variables, { id: uid("v"), name: `variabila_${variables.length + 1}`, type: "int", value: 10 }] })}>Adaugă variabilă</Button></div>
+        <div><Button onClick={() => onChange({ variables: [...variables, { id: uid("v"), name: `variabila_${variables.length + 1}`, type: "int", value: 10 }] })}>Adaugă variabilă</Button></div>
       </Glass>
 
       <Glass className="card stack">
@@ -83,7 +83,7 @@ export default function RulesBuilder({ variables, rules, fields, onChange }: { v
           </div>
         ))}
         {!rules.length && <p className="helper center">Nu există blocuri de automatizare create încă.</p>}
-        <div><Button variant="filled" onClick={() => onChange({ rules: [...rules, { id: uid("r"), name: `Regulă ${rules.length + 1}`, trigger: "on_paid", logic: "and", conditions: [], actions: [] }] })}>Adaugă bloc nou</Button></div>
+        <div><Button onClick={() => onChange({ rules: [...rules, { id: uid("r"), name: `Regulă ${rules.length + 1}`, trigger: "on_paid", logic: "and", conditions: [], actions: [] }] })}>Adaugă bloc nou</Button></div>
       </Glass>
     </>
   );

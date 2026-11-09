@@ -22,7 +22,7 @@ export default function MesajePage() {
       <Glass className="card stack center">
         <h2>Mesaje</h2>
         <p className="muted">Mesajele de la organizatori apar aici după ce te conectezi în aplicație.</p>
-        <Link href="/jucator"><Button variant="filled">Conectează-te</Button></Link>
+        <Link href="/jucator"><Button  >Conectează-te</Button></Link>
       </Glass>
     );
 
