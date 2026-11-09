@@ -1,27 +1,39 @@
-/* Service worker: cache pentru shell + notificari push (FCM). */
-const CACHE = "imc-mm-v2";
+// Interact Club Mediaș — Service Worker
+// Gestioneaza PWA, offline cache si Web Push Notifications (inclusiv pe iOS/Android)
 
-self.addEventListener("install", (e) => {
+const CACHE_NAME = "imc-mm-v3";
+
+self.addEventListener("install", (event) => {
   self.skipWaiting();
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(["/", "/manifest.webmanifest"]).catch(() => {})));
-});
-
-self.addEventListener("activate", (e) => {
-  e.waitUntil(
-    caches.keys().then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k)))).then(() => self.clients.claim())
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) =>
+      cache.addAll(["/", "/manifest.webmanifest"]).catch(() => {})
+    )
   );
 });
 
-self.addEventListener("fetch", (e) => {
-  const req = e.request;
+self.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
+      )
+      .then(() => self.clients.claim())
+  );
+});
+
+// Cache fallback pentru shell (datele live vin prin Firebase WebSocket)
+self.addEventListener("fetch", (event) => {
+  const req = event.request;
   if (req.method !== "GET" || new URL(req.url).origin !== self.location.origin) return;
-  // retea mai intai, cache ca rezerva (datele live vin direct din Firebase)
-  e.respondWith(
+
+  event.respondWith(
     fetch(req)
       .then((res) => {
         if (res.ok) {
           const copy = res.clone();
-          caches.open(CACHE).then((c) => c.put(req, copy));
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, copy));
         }
         return res;
       })
@@ -29,30 +41,58 @@ self.addEventListener("fetch", (e) => {
   );
 });
 
-self.addEventListener("push", (e) => {
-  let d = {};
-  try { d = e.data ? e.data.json() : {}; } catch { d = { title: "Murder Mystery", body: e.data ? e.data.text() : "" }; }
-  const n = d.notification || {};
-  const data = d.data || d;
-  const title = data.title || n.title || "Murder Mystery";
-  e.waitUntil(
-    self.registration.showNotification(title, {
-      body: data.body || n.body || "",
-      tag: data.tag,
-      icon: "/icons/icon-192.png",
-      badge: "/icons/icon-192.png",
-      data: { url: data.url || "/jucator" },
-    })
-  );
+// Notificari Web Push (FCM sau server propriu)
+self.addEventListener("push", (event) => {
+  let data = {
+    title: "Interact Club Mediaș",
+    body: "Ai o notificare nouă.",
+    url: "/jucator",
+  };
+
+  if (event.data) {
+    try {
+      const parsed = event.data.json();
+      const n = parsed.notification || {};
+      const d = parsed.data || parsed;
+      data = {
+        title: d.title || n.title || data.title,
+        body: d.body || n.body || data.body,
+        url: d.url || n.click_action || data.url,
+        tag: d.tag || n.tag || undefined,
+      };
+    } catch (e) {
+      data.body = event.data.text() || data.body;
+    }
+  }
+
+  const options = {
+    body: data.body,
+    icon: "/icons/icon-192.png",
+    badge: "/icons/icon-192.png",
+    tag: data.tag || "imc-notification",
+    data: { url: data.url || "/jucator" },
+    vibrate: [100, 50, 100],
+    renotify: true,
+  };
+
+  event.waitUntil(self.registration.showNotification(data.title, options));
 });
 
-self.addEventListener("notificationclick", (e) => {
-  e.notification.close();
-  const url = (e.notification.data && e.notification.data.url) || "/jucator";
-  e.waitUntil(
-    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((list) => {
-      for (const c of list) if ("focus" in c) { c.navigate && c.navigate(url); return c.focus(); }
-      return self.clients.openWindow(url);
+// Click pe notificare: deschide fereastra existenta sau una noua
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+  const targetUrl = (event.notification.data && event.notification.data.url) || "/jucator";
+
+  event.waitUntil(
+    self.clients.matchAll({ type: "window", includeUncontrolled: true }).then((clientList) => {
+      for (const client of clientList) {
+        if (client.url.includes(targetUrl) && "focus" in client) {
+          return client.focus();
+        }
+      }
+      if (self.clients.openWindow) {
+        return self.clients.openWindow(targetUrl);
+      }
     })
   );
 });
