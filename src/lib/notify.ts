@@ -32,18 +32,24 @@ export async function registerPush(info: { role: string; teamId?: string; statio
   if (!canNotify() || Notification.permission !== "granted") return false;
   try {
     const { getMessaging, getToken, isSupported } = await import("firebase/messaging");
-    if (!(await isSupported())) return false;
+    if (!(await isSupported())) {
+      console.warn("FCM push isSupported returned false (browser/PWA incompatibil)");
+      return false;
+    }
     const reg = await navigator.serviceWorker.ready;
     const vapidKey = process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY || undefined;
     const token = await getToken(getMessaging(), { vapidKey, serviceWorkerRegistration: reg });
-    if (!token) return false;
+    if (!token) {
+      console.warn("Nu s-a putut obtine token-ul FCM (getToken a intors null)");
+      return false;
+    }
     const rec: Record<string, unknown> = { ts: Date.now(), role: info.role };
     if (info.teamId) rec.teamId = info.teamId;
     if (info.stationId) rec.stationId = info.stationId;
     await set(ref(db, `pushTokens/${token}`), rec);
     return true;
   } catch (e) {
-    console.warn("Push indisponibil:", e);
+    console.error("Eroare la inregistrare push notificari:", e);
     return false;
   }
 }

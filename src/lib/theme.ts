@@ -43,14 +43,14 @@ export function applyTheme(t: Theme) {
   set("--lg-tab-selected", t.tabSelected || t.accent);
 
   // Glass: in dark mode tinta neagra, in light mode tinta alba (sau custom glassTint)
-  const tint = t.glassTint || (dark ? "#1a1a2e" : "#ffffff");
-  const a = t.glassAlpha ?? (dark ? 0.55 : 0.16);
+  const tint = t.glassTint || (dark ? "#12121e" : "#ffffff");
+  const a = t.glassAlpha ?? (dark ? 0.22 : 0.16);
   set("--lg-glass", `color-mix(in srgb, ${tint} ${Math.round(a * 100)}%, transparent)`);
-  set("--lg-panel", `color-mix(in srgb, ${tint} ${Math.min(72, Math.round(a * 260))}%, transparent)`);
+  set("--lg-panel", `color-mix(in srgb, ${tint} ${Math.min(48, Math.round(a * 150))}%, transparent)`);
 
   // Dark mode: sticla activa (hover/press) mai deschisa
   if (dark) {
-    set("--lg-glass-active", `color-mix(in srgb, ${tint} ${Math.round(Math.min(a * 1.6, 0.85) * 100)}%, transparent)`);
+    set("--lg-glass-active", `color-mix(in srgb, ${tint} ${Math.round(Math.min(a * 1.5, 0.45) * 100)}%, transparent)`);
     set("--lg-edge", "rgb(255 255 255 / 0.1)");
     set("--lg-segment-label", ink);
     set("--lg-segment-thumb", "rgb(255 255 255 / 0.18)");

@@ -32,6 +32,7 @@ const ITEMS = [
   { value: "msg", label: "Mesaje", title: "Mesagerie", icon: "bell" },
   { value: "media", label: "Temă", title: "Temă & imagini", icon: "image" },
   { value: "data", label: "Date", title: "Date (acces total)", icon: "code" },
+  { value: "logs", label: "Update-uri", title: "Istoric Update-uri (Changelog)", icon: "file" },
 ];
 
 function Dev() {
@@ -42,6 +43,7 @@ function Dev() {
       {tab === "media" && <Media />}
       {tab === "msg" && <Compose />}
       {tab === "data" && <DataTabs />}
+      {tab === "logs" && <UpdateLogs />}
     </DashShell>
   );
 }
@@ -257,6 +259,73 @@ function Users() {
           </div>
         </Glass>
       ))}
+    </>
+  );
+}
+
+const UPDATE_LOGS = [
+  {
+    version: "v1.2.1",
+    date: "09.11.2026 12:45",
+    title: "Service Worker Push, transparență sticlă & log-uri sistem",
+    changes: [
+      "Notificări Service Worker adaptate pentru Interact Club Mediaș cu renotify, vibrație și deschidere inteligentă.",
+      "Optimizare opacitate carduri în Dark Mode (fondul nu mai este negru intens, ci sticlă translucidă fină).",
+      "Logging detaliat la înregistrarea FCM Push Tokens.",
+      "Tab dedicat de Update Logs în panoul Developer."
+    ]
+  },
+  {
+    version: "v1.2.0",
+    date: "09.11.2026 12:29",
+    title: "Eliminare spotlight & fix formulare",
+    changes: [
+      "Eliminat complet efectul de spotlight (radial gradient hover/click) de pe toate cardurile.",
+      "Fix formulare: ID-urile câmpurilor nu mai resetează cardul la tastare.",
+      "Documentele șterse rămân șterse și nu mai reapar automat din valorile demo."
+    ]
+  },
+  {
+    version: "v1.1.0",
+    date: "09.11.2026 01:23",
+    title: "Vizibilitate butoane & remediere aberație cromatică",
+    changes: [
+      "Textul butoanelor este mereu vizibil pe fundaluri întunecate.",
+      "Backdrop-ul refractat este activat strict pe ecrane desktop fără imagini cu text, eliminând glitch-ul RGB.",
+      "Rezolvată persistența temei la salvare în baza de date."
+    ]
+  },
+  {
+    version: "v1.0.0",
+    date: "09.11.2026 00:16",
+    title: "Lansare inițială platformă",
+    changes: [
+      "Formular de înregistrare, sistem de status echipă, rotație stații și panouri organizator/developer."
+    ]
+  }
+];
+
+function UpdateLogs() {
+  return (
+    <>
+      <div className="list">
+        {UPDATE_LOGS.map((log) => (
+          <Glass className="card stack" key={log.version}>
+            <div className="row between">
+              <span className="row" style={{ gap: "8px" }}>
+                <Pill tone="info">{log.version}</Pill>
+                <strong>{log.title}</strong>
+              </span>
+              <span className="helper">{log.date}</span>
+            </div>
+            <ul style={{ margin: 0, paddingLeft: "20px", display: "flex", flexDirection: "column", gap: "6px" }}>
+              {log.changes.map((c, i) => (
+                <li key={i} className="muted" style={{ fontSize: "0.92rem" }}>{c}</li>
+              ))}
+            </ul>
+          </Glass>
+        ))}
+      </div>
     </>
   );
 }
